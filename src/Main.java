@@ -6,9 +6,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -28,7 +30,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-        window.setTitle("Menu");
+        window.setTitle("DayCare");
 
         // File menu
         Menu filemenu = new Menu("File");
@@ -100,10 +102,46 @@ public class Main extends Application {
         
         
         
+        
+        
+        
+        
+        
+        TableColumn<Member, String> childFNameCol = new TableColumn<Member, String>("Child First Name");
+        childFNameCol.setMinWidth(150);
+        childFNameCol.setCellValueFactory(new PropertyValueFactory<>("childFirstName"));
+        
+        TableColumn<Member, String> childLNameCol = new TableColumn<Member, String>("Child Last Name");
+        childLNameCol.setMinWidth(150);
+        childLNameCol.setCellValueFactory(new PropertyValueFactory<>("childLastName"));
+        
+        TableColumn<Member, Integer> AgeCol = new TableColumn<Member, Integer>("Age");
+        AgeCol.setMinWidth(75);
+        AgeCol.setCellValueFactory(new PropertyValueFactory<>("age"));
+        
+        TableColumn<Member, Integer> ContactCol = new TableColumn<Member, Integer>("Contact");
+        ContactCol.setMinWidth(250);
+        ContactCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        
+        TableColumn<Member, String> P1FirstNameCol = new TableColumn<Member, String>("Parent First Name");
+        P1FirstNameCol.setMinWidth(200);
+        P1FirstNameCol.setCellValueFactory(new PropertyValueFactory<>("P1FirstName"));
+        
+        TableColumn<Member, String> P1LastNameCol = new TableColumn<Member, String>("Parent Last Name");
+        P1LastNameCol.setMinWidth(200);
+        P1LastNameCol.setCellValueFactory(new PropertyValueFactory<>("P1LastName"));
+
+      
+      
+        table = new TableView<Member>();
+        table.getColumns().addAll(childFNameCol,childLNameCol,AgeCol,ContactCol,P1FirstNameCol,P1LastNameCol);
+        
+        
         layout = new BorderPane();
         layout.setTop(menuBar);
+        layout.setCenter(table);
 
-        Scene scene = new Scene(layout, 400, 300);
+        Scene scene = new Scene(layout, 830, 600);
         window.setScene(scene);
         window.show();
 
