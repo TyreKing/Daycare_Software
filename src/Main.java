@@ -1,6 +1,13 @@
+
+import java.util.Locale;
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
+
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -12,17 +19,30 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     Stage window;
+    GridPane innerlayout;
     BorderPane layout;
-    
-    TableView<Member> table;
-    TextField ageInput, phoneNumber, timeIn, timeOut,childFirstName, childLastName,P1FirstName,
-    P2FirstName,P1LastName,P2LastName;
 
-    public static void main(String[] args) {
+    TableView<Member> table;
+    TextField ageInput, phoneNumber, timeIn, timeOut, childFirstName,
+            childLastName, P1FirstName, P1LastName, addressField;
+    
+    Button addButton, deleteButton, undoButton, redoButton
+    , editButon, clockInButton, clockOutButton;
+    
+    DatePicker checkInDatePicker;
+    final String patter = "yyyy-MM-dd";
+
+    public static void main(String[] args) {   
+        Locale.setDefault(Locale.US);
         launch(args);
 
     }
@@ -40,13 +60,25 @@ public class Main extends Application {
         newfile.setOnAction(e -> System.out.println("Create a new file..."));
         filemenu.getItems().add(newfile);
 
-        filemenu.getItems().add(new MenuItem("Open..."));
+        filemenu.getItems().add(new MenuItem("Open..."));     
         filemenu.getItems().add(new MenuItem("Save..."));
         filemenu.getItems().add(new SeparatorMenuItem());
         filemenu.getItems().add(new MenuItem("Settings..."));
         filemenu.getItems().add(new SeparatorMenuItem());
         filemenu.getItems().add(new MenuItem("Exit"));
-
+        
+        //fileMenu functionality
+        filemenu.getItems().get(0).setOnAction(e -> System.out.println("File-New"));
+        filemenu.getItems().get(1).setOnAction(e -> openFile());
+        filemenu.getItems().get(2).setOnAction(e -> saveFile());
+        filemenu.getItems().get(4).setOnAction(e -> System.out.println("File-Settings"));
+        filemenu.getItems().get(6).setOnAction(e -> closeProgram());
+        
+        
+        
+        
+        
+        
         // Edit menu
         Menu editMenu = new Menu("_Edit");
         editMenu.getItems().add(new MenuItem("Cut"));
@@ -94,57 +126,181 @@ public class Main extends Application {
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filemenu, editMenu, help, difficultyMenu);
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        TableColumn<Member, String> childFNameCol = new TableColumn<Member, String>("Child First Name");
+        TableColumn<Member, String> childFNameCol = new TableColumn<Member, String>(
+                "Child First Name");
         childFNameCol.setMinWidth(150);
-        childFNameCol.setCellValueFactory(new PropertyValueFactory<>("childFirstName"));
-        
-        TableColumn<Member, String> childLNameCol = new TableColumn<Member, String>("Child Last Name");
+        childFNameCol.setCellValueFactory(
+                new PropertyValueFactory<>("childFirstName"));
+
+        TableColumn<Member, String> childLNameCol = new TableColumn<Member, String>(
+                "Child Last Name");
         childLNameCol.setMinWidth(150);
-        childLNameCol.setCellValueFactory(new PropertyValueFactory<>("childLastName"));
-        
-        TableColumn<Member, Integer> AgeCol = new TableColumn<Member, Integer>("Age");
+        childLNameCol.setCellValueFactory(
+                new PropertyValueFactory<>("childLastName"));
+
+        TableColumn<Member, Integer> AgeCol = new TableColumn<Member, Integer>(
+                "Age");
         AgeCol.setMinWidth(75);
         AgeCol.setCellValueFactory(new PropertyValueFactory<>("age"));
-        
-        TableColumn<Member, Integer> ContactCol = new TableColumn<Member, Integer>("Contact");
-        ContactCol.setMinWidth(250);
-        ContactCol.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        
-        TableColumn<Member, String> P1FirstNameCol = new TableColumn<Member, String>("Parent First Name");
-        P1FirstNameCol.setMinWidth(200);
-        P1FirstNameCol.setCellValueFactory(new PropertyValueFactory<>("P1FirstName"));
-        
-        TableColumn<Member, String> P1LastNameCol = new TableColumn<Member, String>("Parent Last Name");
-        P1LastNameCol.setMinWidth(200);
-        P1LastNameCol.setCellValueFactory(new PropertyValueFactory<>("P1LastName"));
 
-      
-      
+        TableColumn<Member, Integer> ContactCol = new TableColumn<Member, Integer>(
+                "Contact");
+        ContactCol.setMinWidth(250);
+        ContactCol.setCellValueFactory(
+                new PropertyValueFactory<>("phoneNumber"));
+
+        TableColumn<Member, String> P1FirstNameCol = new TableColumn<Member, String>(
+                "Parent First Name");
+        P1FirstNameCol.setMinWidth(200);
+        P1FirstNameCol.setCellValueFactory(
+                new PropertyValueFactory<>("P1FirstName"));
+
+        TableColumn<Member, String> P1LastNameCol = new TableColumn<Member, String>(
+                "Parent Last Name");
+        P1LastNameCol.setMinWidth(200);
+        P1LastNameCol
+                .setCellValueFactory(new PropertyValueFactory<>("P1LastName"));
+
+        TableColumn<Member, String> addressCol = new TableColumn<Member, String>(
+                "Address");
+        addressCol.setMinWidth(270);
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        
+            
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        HBox directInput = new HBox();
+        //create Buttons
+        configureButtons();
+        //Fill HBox
+        fillHBox();
+        directInput.setPadding(new Insets(10));
+        directInput.setSpacing(10);
+        directInput.getChildren().addAll(clockInButton, childFirstName,
+                childLastName, ageInput, phoneNumber, P1FirstName, P1LastName,addressField,
+                clockOutButton);
+
+        VBox options = new VBox();
+
         table = new TableView<Member>();
-        table.getColumns().addAll(childFNameCol,childLNameCol,AgeCol,ContactCol,P1FirstNameCol,P1LastNameCol);
-        
-        
+        table.getColumns().addAll(childFNameCol, childLNameCol, AgeCol,
+                ContactCol, P1FirstNameCol, P1LastNameCol, addressCol);
+
+        innerlayout = new GridPane();
+        GridPane.setConstraints(addButton, 0, 0);
+        GridPane.setConstraints(deleteButton, 0, 1);
+        GridPane.setConstraints(undoButton, 1, 0);
+        GridPane.setConstraints(redoButton, 1, 1);
+        innerlayout.setPadding(new Insets(10));
+        innerlayout.setVgap(8);
+        innerlayout.setHgap(10);
+        innerlayout.getChildren().addAll(addButton, deleteButton, undoButton,redoButton);
+
         layout = new BorderPane();
         layout.setTop(menuBar);
+        layout.setBottom(directInput);
         layout.setCenter(table);
-
-        Scene scene = new Scene(layout, 830, 600);
+        layout.setRight(innerlayout);
+        window.setOnCloseRequest(e -> closeProgram());
+        Scene scene = new Scene(layout);
         window.setScene(scene);
         window.show();
 
     }
 
+    private void closeProgram() {
+          
+            Boolean answer = ExitAlertBox.display("Exit", "Sure you want to exit?");
+            if (answer) {
+                window.close(); 
+            }
+            
+        }
+    
+
+    private void saveFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.showSaveDialog(window);
+    }
+
+    private void openFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File");
+        fileChooser.showOpenDialog(window);
+    }
+
+    private void fillHBox() {
+        ageInput = new TextField();
+        ageInput.setPromptText("Age");
+        ageInput.setMinWidth(10);
+        ageInput.setPadding(new Insets(10));
+
+        phoneNumber = new TextField();
+        phoneNumber.setPromptText("Contact");
+        phoneNumber.setMinWidth(75);
+        phoneNumber.setPadding(new Insets(10));
+
+        timeIn = new TextField();
+        timeIn.setPromptText("Clock In");
+        timeIn.setMinWidth(75);
+        timeIn.setPadding(new Insets(10));
+
+        timeOut = new TextField();
+        timeOut.setPromptText("Clock Out");
+        timeOut.setMinWidth(75);
+        timeOut.setPadding(new Insets(10));
+
+        childFirstName = new TextField();
+        childFirstName.setPromptText("Child First Name");
+        childFirstName.setMinWidth(75);
+        childFirstName.setPadding(new Insets(10));
+
+        childLastName = new TextField();
+        childLastName.setPromptText("Child Last Name");
+        childLastName.setMinWidth(75);
+        childLastName.setPadding(new Insets(10));
+
+        P1FirstName = new TextField();
+        P1FirstName.setPromptText("Parent First Name");
+        P1FirstName.setMinWidth(75);
+        P1FirstName.setPadding(new Insets(10));
+
+        P1LastName = new TextField();
+        P1LastName.setPromptText("Parent Last Name");
+        P1LastName.setMinWidth(75);
+        P1LastName.setPadding(new Insets(10));
+        
+        addressField = new TextField();
+        addressField.setPromptText("Address");
+        addressField.setMinWidth(95);
+        addressField.setPadding(new Insets(10));
+
+    }
+
+    private void configureButtons() {
+         deleteButton = new Button("Delete");
+         addButton = new Button("Add");
+         undoButton = new Button("Undo");
+         redoButton= new Button("Redo");
+         clockInButton = new Button("Clock In");
+         clockOutButton = new Button("Clock Out");
+        
+         undoButton.setPadding(new Insets(10));
+         redoButton.setPadding(new Insets(10, 12,10,10));
+        clockInButton.setPadding(new Insets(10));
+        clockOutButton.setPadding(new Insets(10));
+        addButton.setPadding(new Insets(10, 22, 10, 10));
+        deleteButton.setPadding(new Insets(10));
+
+    }
 }
+

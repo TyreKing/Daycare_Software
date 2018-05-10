@@ -6,7 +6,7 @@ public class Member {
     
     private int age, phoneNumber,timeIn,timeOut;
     private String childFirstName, childLastName,P1FirstName,
-                    P2FirstName,P1LastName,P2LastName;
+                   P1LastName, address;
     
     
     
@@ -15,18 +15,17 @@ public class Member {
         this.phoneNumber=0;
         this.timeIn = 0;
         this.timeOut = 0;
-        
+        this.address = "";
         this.childFirstName ="";
         this.childLastName ="";
         this.P1FirstName= "";
-        this.P2FirstName = "";
         this.P1LastName ="";
-        this.P2LastName = "";
+        
     }
     
     public Member(int age, int phoneNumber, int timeIn, int timeout
             ,String childFirstName, String childLastName, String p1F, String p1L
-            ,String p2F, String p2L){
+            ,String address){
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.timeIn = timeIn;
@@ -35,8 +34,7 @@ public class Member {
         this.childLastName =childLastName;
         this.P1FirstName = p1F;
         this.P1LastName = p1L;
-        this.P2FirstName = p2F;
-        this.P2LastName = p2L;
+        this.address = address;
         
         
     }
@@ -55,13 +53,10 @@ public class Member {
     public String getP1LastName() {
         return P1LastName;
     }
-    public String getP2FirstName() {
-        return P2FirstName;
+   
+    public String getAddress() {
+        return address;
     }
-    public String getP2LastName() {
-        return P2LastName;
-    }
-    
     public int getPhoneNumber() {
         return phoneNumber;
     }
@@ -72,7 +67,9 @@ public class Member {
         return timeOut;
     }
     
-    
+    public void setAddress(String address) {
+        this.address = address;
+    }
     public void setAge(int age) {
         this.age = age;
     }
@@ -88,12 +85,7 @@ public class Member {
     public void setP1LastName(String p1LastName) {
         P1LastName = p1LastName;
     }
-    public void setP2FirstName(String p2FirstName) {
-        P2FirstName = p2FirstName;
-    }
-    public void setP2LastName(String p2LastName) {
-        P2LastName = p2LastName;
-    }
+ 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
