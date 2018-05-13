@@ -4,7 +4,8 @@ import javax.management.loading.PrivateClassLoader;
 
 public class Member {
     
-    private int age, phoneNumber,timeIn,timeOut;
+    private int age,timeIn,timeOut;
+    private long phoneNumber;
     private String childFirstName, childLastName,P1FirstName,
                    P1LastName, address;
     
@@ -57,7 +58,7 @@ public class Member {
     public String getAddress() {
         return address;
     }
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
     public int getTimeIn() {
@@ -86,7 +87,7 @@ public class Member {
         P1LastName = p1LastName;
     }
  
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
     public void setTimeIn(int timeIn) {

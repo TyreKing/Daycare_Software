@@ -2,6 +2,7 @@
 import java.util.Locale;
 
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 
 import javafx.scene.Scene;
@@ -40,6 +41,8 @@ public class Main extends Application {
     
     DatePicker checkInDatePicker;
     final String patter = "yyyy-MM-dd";
+    
+    
 
     public static void main(String[] args) {   
         Locale.setDefault(Locale.US);
@@ -66,6 +69,7 @@ public class Main extends Application {
         filemenu.getItems().add(new MenuItem("Settings..."));
         filemenu.getItems().add(new SeparatorMenuItem());
         filemenu.getItems().add(new MenuItem("Exit"));
+        
         
         //fileMenu functionality
         filemenu.getItems().get(0).setOnAction(e -> System.out.println("File-New"));
@@ -193,6 +197,10 @@ public class Main extends Application {
         table = new TableView<Member>();
         table.getColumns().addAll(childFNameCol, childLNameCol, AgeCol,
                 ContactCol, P1FirstNameCol, P1LastNameCol, addressCol);
+        
+        
+        addButton.setOnAction(e -> addFunctionality());
+        deleteButton.setOnAction(e -> deleteFunctionality());
 
         innerlayout = new GridPane();
         GridPane.setConstraints(addButton, 0, 0);
@@ -214,6 +222,40 @@ public class Main extends Application {
         window.setScene(scene);
         window.show();
 
+    }
+
+    private void deleteFunctionality() {
+        boolean ans = ExitAlertBox.display("Delete?", "Are you sure you want to delete this selected row?");
+        if(ans){
+        ObservableList<Member>memeberselected, allMembers;
+        allMembers = table.getItems();
+        memeberselected = table.getSelectionModel().getSelectedItems();
+        memeberselected.forEach(allMembers::remove);
+        }
+        
+    }
+
+    private void addFunctionality() {
+        Member member = new Member();
+        member.setAge(Integer.parseInt(ageInput.getText()));
+        member.setAddress(addressField.getText());
+        member.setChildFirstName(childFirstName.getText());
+        member.setChildLastName(childLastName.getText());
+        member.setPhoneNumber( Long.parseLong(phoneNumber.getText()));
+        member.setP1FirstName(P1FirstName.getText());
+        member.setP1LastName(P1LastName.getText());
+        table.getItems().add(member);
+        clearInputs();
+    }
+
+    private void clearInputs() {
+        ageInput.clear();
+        addressField.clear();
+        childFirstName.clear();
+        childLastName.clear();
+        phoneNumber.clear();
+        P1FirstName.clear();
+        P1LastName.clear();  
     }
 
     private void closeProgram() {
