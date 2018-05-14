@@ -236,6 +236,20 @@ public class Main extends Application {
     }
 
     private void addFunctionality() {
+        if(ageInput.getText().equals("")||addressField.getText().equals("")
+                || childFirstName.getText().equals("")|| childLastName.getText().equals("")
+                || phoneNumber.getText().equals("")||P1FirstName.getText().equals("")
+                ||P1LastName.getText().equals("")){
+            
+            ExitAlertBox.inputAlert("Alert", "Please enter the missing information.");
+        }else if(ageInput.getText().length() >2){
+            ExitAlertBox.inputAlert("Alert", "Please enter the correct age.");
+           
+        }else if(phoneNumber.getText().length()!= 10){
+            System.out.println("please enter correct number");
+            ExitAlertBox.inputAlert("Alert", "The phone number you entered is not the correct length.");
+        }else{
+        
         Member member = new Member();
         member.setAge(Integer.parseInt(ageInput.getText()));
         member.setAddress(addressField.getText());
@@ -246,6 +260,7 @@ public class Main extends Application {
         member.setP1LastName(P1LastName.getText());
         table.getItems().add(member);
         clearInputs();
+        }
     }
 
     private void clearInputs() {

@@ -8,14 +8,43 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class ExitAlertBox {
 
     static boolean answer;
+    
+    public static void inputAlert(String title, String Message){
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle(title);
+        window.setMinWidth(350);
+        
+        Label label = new Label();
+        label.setText(Message);
+        label.setPadding(new Insets(10));
+        
+        
+        Button ok = new Button("OK");
+        ok.setPadding(new Insets(10));
+        
+        ok.setOnAction(e -> window.close() );
+        
+        VBox layout = new VBox();
+        layout.getChildren().addAll(label,ok);
+        layout.setAlignment(Pos.CENTER);
+        
+        Scene scene = new Scene(layout,95,95);
+        window.setScene(scene);
+        window.show();
+        
+        
+    }
     
     public static boolean display(String title, String Message){
         Stage window = new Stage();
@@ -56,9 +85,9 @@ public class ExitAlertBox {
         window.showAndWait();
         
         return answer;
-        
-      
-        
-        
+
     }
+   
 }
+
+
