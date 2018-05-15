@@ -357,7 +357,8 @@ public class Main extends Application {
         clockOutButton.setPadding(new Insets(10));
         addButton.setPadding(new Insets(10, 22, 10, 10));
         deleteButton.setPadding(new Insets(10));
-
+        
+        
     }
 }
 
