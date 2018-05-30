@@ -219,6 +219,7 @@ public class Main extends Application {
         layout.setRight(innerlayout);
         window.setOnCloseRequest(e -> closeProgram());
         Scene scene = new Scene(layout);
+        scene.getStylesheets().add("style.css");
         window.setScene(scene);
         window.show();
 
