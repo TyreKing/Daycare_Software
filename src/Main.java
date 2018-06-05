@@ -1,4 +1,6 @@
 
+import java.math.BigInteger;
+import java.nio.file.WatchEvent.Kind;
 import java.util.Locale;
 
 import javafx.application.Application;
@@ -35,16 +37,19 @@ public class Main extends Application {
     TableView<Member> table;
     TextField ageInput, phoneNumber, timeIn, timeOut, childFirstName,
             childLastName, P1FirstName, P1LastName, addressField;
-    
-    Button addButton, deleteButton, undoButton, redoButton
-    , editButon, clockInButton, clockOutButton;
-    
+
+    Button addButton, deleteButton, undoButton, redoButton, editButon,
+            clockInButton, clockOutButton;
+
     DatePicker checkInDatePicker;
     final String patter = "yyyy-MM-dd";
     
     
+    
+   
+    
 
-    public static void main(String[] args) {   
+    static void main(String[] args) {
         Locale.setDefault(Locale.US);
         launch(args);
 
@@ -63,26 +68,22 @@ public class Main extends Application {
         newfile.setOnAction(e -> System.out.println("Create a new file..."));
         filemenu.getItems().add(newfile);
 
-        filemenu.getItems().add(new MenuItem("Open..."));     
+        filemenu.getItems().add(new MenuItem("Open..."));
         filemenu.getItems().add(new MenuItem("Save..."));
         filemenu.getItems().add(new SeparatorMenuItem());
         filemenu.getItems().add(new MenuItem("Settings..."));
         filemenu.getItems().add(new SeparatorMenuItem());
         filemenu.getItems().add(new MenuItem("Exit"));
-        
-        
-        //fileMenu functionality
-        filemenu.getItems().get(0).setOnAction(e -> System.out.println("File-New"));
+
+        // fileMenu functionality
+        filemenu.getItems().get(0)
+                .setOnAction(e -> System.out.println("File-New"));
         filemenu.getItems().get(1).setOnAction(e -> openFile());
         filemenu.getItems().get(2).setOnAction(e -> saveFile());
-        filemenu.getItems().get(4).setOnAction(e -> System.out.println("File-Settings"));
+        filemenu.getItems().get(4)
+                .setOnAction(e -> System.out.println("File-Settings"));
         filemenu.getItems().get(6).setOnAction(e -> closeProgram());
-        
-        
-        
-        
-        
-        
+
         // Edit menu
         Menu editMenu = new Menu("_Edit");
         editMenu.getItems().add(new MenuItem("Cut"));
@@ -170,35 +171,23 @@ public class Main extends Application {
         addressCol.setMinWidth(270);
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
         HBox directInput = new HBox();
-        //create Buttons
+        // create Buttons
         configureButtons();
-        //Fill HBox
+        // Fill HBox
         fillHBox();
         directInput.setPadding(new Insets(10));
         directInput.setSpacing(10);
         directInput.getChildren().addAll(clockInButton, childFirstName,
-                childLastName, ageInput, phoneNumber, P1FirstName, P1LastName,addressField,
-                clockOutButton);
+                childLastName, ageInput, phoneNumber, P1FirstName, P1LastName,
+                addressField, clockOutButton);
 
         VBox options = new VBox();
 
         table = new TableView<Member>();
         table.getColumns().addAll(childFNameCol, childLNameCol, AgeCol,
                 ContactCol, P1FirstNameCol, P1LastNameCol, addressCol);
-        
-        
+
         addButton.setOnAction(e -> addFunctionality());
         deleteButton.setOnAction(e -> deleteFunctionality());
 
@@ -210,7 +199,8 @@ public class Main extends Application {
         innerlayout.setPadding(new Insets(10));
         innerlayout.setVgap(8);
         innerlayout.setHgap(10);
-        innerlayout.getChildren().addAll(addButton, deleteButton, undoButton,redoButton);
+        innerlayout.getChildren().addAll(addButton, deleteButton, undoButton,
+                redoButton);
 
         layout = new BorderPane();
         layout.setTop(menuBar);
@@ -226,41 +216,49 @@ public class Main extends Application {
     }
 
     private void deleteFunctionality() {
-        boolean ans = ExitAlertBox.display("Delete?", "Are you sure you want to delete this selected row?");
-        if(ans){
-        ObservableList<Member>memeberselected, allMembers;
-        allMembers = table.getItems();
-        memeberselected = table.getSelectionModel().getSelectedItems();
-        memeberselected.forEach(allMembers::remove);
+        boolean ans = ExitAlertBox.display("Delete?",
+                "Are you sure you want to delete this selected row?");
+        if (ans) {
+            ObservableList<Member> memeberselected, allMembers;
+            allMembers = table.getItems();
+            memeberselected = table.getSelectionModel().getSelectedItems();
+            memeberselected.forEach(allMembers::remove);
         }
-        
+
     }
 
     private void addFunctionality() {
-        if(ageInput.getText().equals("")||addressField.getText().equals("")
-                || childFirstName.getText().equals("")|| childLastName.getText().equals("")
-                || phoneNumber.getText().equals("")||P1FirstName.getText().equals("")
-                ||P1LastName.getText().equals("")){
-            
-            ExitAlertBox.inputAlert("Alert", "Please enter the missing information.");
-        }else if(ageInput.getText().length() >2){
+        if (ageInput.getText().equals("") || addressField.getText().equals("")
+                || childFirstName.getText().equals("")
+                || childLastName.getText().equals("")
+                || phoneNumber.getText().equals("")
+                || P1FirstName.getText().equals("")
+                || P1LastName.getText().equals("")) {
+
+            ExitAlertBox.inputAlert("Alert",
+                    "Please enter the missing information.");
+        }
+        else if (ageInput.getText().length() > 2) {
             ExitAlertBox.inputAlert("Alert", "Please enter the correct age.");
-           
-        }else if(phoneNumber.getText().length()!= 10){
+
+        }
+        else if (phoneNumber.getText().length() != 10) {
             System.out.println("please enter correct number");
-            ExitAlertBox.inputAlert("Alert", "The phone number you entered is not the correct length.");
-        }else{
-        
-        Member member = new Member();
-        member.setAge(Integer.parseInt(ageInput.getText()));
-        member.setAddress(addressField.getText());
-        member.setChildFirstName(childFirstName.getText());
-        member.setChildLastName(childLastName.getText());
-        member.setPhoneNumber( Long.parseLong(phoneNumber.getText()));
-        member.setP1FirstName(P1FirstName.getText());
-        member.setP1LastName(P1LastName.getText());
-        table.getItems().add(member);
-        clearInputs();
+            ExitAlertBox.inputAlert("Alert",
+                    "The phone number you entered is not the correct length.");
+        }
+        else {
+
+            Member member = new Member();
+            member.setAge(Integer.parseInt(ageInput.getText()));
+            member.setAddress(addressField.getText());
+            member.setChildFirstName(childFirstName.getText());
+            member.setChildLastName(childLastName.getText());
+            member.setPhoneNumber(Long.parseLong(phoneNumber.getText()));
+            member.setP1FirstName(P1FirstName.getText());
+            member.setP1LastName(P1LastName.getText());
+            table.getItems().add(member);
+            clearInputs();
         }
     }
 
@@ -271,18 +269,18 @@ public class Main extends Application {
         childLastName.clear();
         phoneNumber.clear();
         P1FirstName.clear();
-        P1LastName.clear();  
+        P1LastName.clear();
     }
 
     private void closeProgram() {
-          
-            Boolean answer = ExitAlertBox.display("Exit", "Sure you want to exit?");
-            if (answer) {
-                window.close(); 
-            }
-            
+
+        Boolean answer = ExitAlertBox.display("Exit",
+                "Sure you want to exit?");
+        if (answer) {
+            window.close();
         }
-    
+
+    }
 
     private void saveFile() {
         FileChooser fileChooser = new FileChooser();
@@ -336,7 +334,7 @@ public class Main extends Application {
         P1LastName.setPromptText("Parent Last Name");
         P1LastName.setMinWidth(75);
         P1LastName.setPadding(new Insets(10));
-        
+
         addressField = new TextField();
         addressField.setPromptText("Address");
         addressField.setMinWidth(95);
@@ -345,21 +343,19 @@ public class Main extends Application {
     }
 
     private void configureButtons() {
-         deleteButton = new Button("Delete");
-         addButton = new Button("Add");
-         undoButton = new Button("Undo");
-         redoButton= new Button("Redo");
-         clockInButton = new Button("Clock In");
-         clockOutButton = new Button("Clock Out");
-        
-         undoButton.setPadding(new Insets(10));
-         redoButton.setPadding(new Insets(10, 12,10,10));
+        deleteButton = new Button("Delete");
+        addButton = new Button("Add");
+        undoButton = new Button("Undo");
+        redoButton = new Button("Redo");
+        clockInButton = new Button("Clock In");
+        clockOutButton = new Button("Clock Out");
+
+        undoButton.setPadding(new Insets(10));
+        redoButton.setPadding(new Insets(10, 12, 10, 10));
         clockInButton.setPadding(new Insets(10));
         clockOutButton.setPadding(new Insets(10));
         addButton.setPadding(new Insets(10, 22, 10, 10));
         deleteButton.setPadding(new Insets(10));
-        
-        
+
     }
 }
-

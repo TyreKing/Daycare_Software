@@ -2,3 +2,47 @@
 	-fx-background-color: linear-gradient(#383838, #838383);
      -fx-font-size: 11pt;
 }
+
+.button {
+    -fx-font: 16px "Serif";
+    -fx-padding: 10;
+    -fx-background-color: linear-gradient(to bottom right, purple, lightblue);
+    -fx-color: red;
+   
+}
+.table-view .column-header-background{
+    -fx-background-color: linear-gradient(to bottom right, purple, lightblue);
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+}
+.table-view .filler{
+	-fx-background-color: transparent;
+}
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #484848;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; 
+    -fx-color:lightblue;
+    
+}
+.table-row-cell:even{
+    -fx-background-color: -fx-table-cell-border-color, #2c2c2c;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */  
+    -fx-color: purple;
+    -fx-text-fill: white;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: lightblue;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+

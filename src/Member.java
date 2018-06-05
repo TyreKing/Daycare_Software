@@ -1,4 +1,3 @@
-import javax.management.loading.PrivateClassLoader;
 
 
 
@@ -24,7 +23,7 @@ public class Member {
         
     }
     
-    public Member(int age, int phoneNumber, int timeIn, int timeout
+    public Member(int age, long phoneNumber, int timeIn, int timeout
             ,String childFirstName, String childLastName, String p1F, String p1L
             ,String address){
         this.age = age;
